@@ -1,17 +1,20 @@
 'use client';
 
 import React, {useState} from 'react';
-import {Box, Button, Container, CssBaseline, TextField, Typography} from '@mui/material';
-import {useDispatch} from 'react-redux';
+import {Box, Container, CssBaseline, TextField, Typography} from '@mui/material';
+import {useDispatch, useSelector} from 'react-redux';
 import type {AppDispatch} from '@/redux/store';
 import {SignIn} from '@/redux/reducers/auth-slice';
 import {useRouter} from 'next/navigation';
+import {selectLoading} from '@/redux/selectors/auth-selector';
+import {LoadingButton} from '@mui/lab';
 
 const Page = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const isLoading = useSelector(selectLoading);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,9 +54,16 @@ const Page = () => {
             id="password"
             autoComplete="current-password"
           />
-          <Button onClick={() => dispatch(SignIn(username, password, router))} fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
+
+          <LoadingButton
+            loading={isLoading}
+            disabled={isLoading}
+            onClick={() => dispatch(SignIn(username, password, router))}
+            fullWidth
+            variant="contained"
+            sx={{mt: 3, mb: 2}}>
             Sign In
-          </Button>
+          </LoadingButton>
         </Box>
       </Box>
     </Container>
