@@ -1,7 +1,5 @@
+import {getAccessToken} from '@/helpers/token-helper';
 import axios from 'axios';
-// import {getTokens} from '../utils/token-utils';
-// import {refreshToken} from './services/auth';
-// import {getTokens, saveTokens} from '../utils/token-utils';
 
 const baseURL = 'http://localhost:4000/';
 
@@ -17,22 +15,24 @@ const ApiClient = axios.create({
     mode: 'cors',
     redirect: 'follow',
     referrer: 'no-referrer',
+    withCredentials: true,
   },
 });
 
-// myApiInstance.interceptors.request.use(
-//   async (config: any) => {
-//     const {accessToken, refreshToken} = await getTokens();
-//     const headers = {
-//       ...config.headers,
-//       Authorization: `Bearer ${accessToken}`,
-//       'x-refresh-token': refreshToken,
-//     };
-//     return {...config, headers};
-//   },
-//   error => {
-//     Promise.reject(error);
-//   },
-// );
+ApiClient.interceptors.request.use(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (config: any) => {
+    const accessToken = await getAccessToken();
+    const headers = {
+      ...config.headers,
+      Authorization: `Bearer ${accessToken}`,
+      // 'x-refresh-token': refreshToken,
+    };
+    return {...config, headers};
+  },
+  error => {
+    Promise.reject(error);
+  },
+);
 
 export default ApiClient;

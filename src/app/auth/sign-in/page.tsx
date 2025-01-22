@@ -11,10 +11,11 @@ import {LoadingButton} from '@mui/lab';
 
 const Page = () => {
   const router = useRouter();
+  const isLoading = useSelector(selectLoading);
   const dispatch = useDispatch<AppDispatch>();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const isLoading = useSelector(selectLoading);
+  
 
   return (
     <Container component="main" maxWidth="xs">

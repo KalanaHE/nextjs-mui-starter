@@ -18,9 +18,12 @@
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",
     "formik": "^2.4.6",
+    "i18next": "^24.2.1",
     "next": "15.1.4",
+    "next-i18next": "^15.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-i18next": "^15.4.0",
     "react-redux": "^9.2.0",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0"

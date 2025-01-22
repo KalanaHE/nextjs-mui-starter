@@ -1,0 +1,44 @@
+{
+  "language": "english",
+  "screens": {
+    "login": {
+      "title": "Sign in",
+      "button": {
+        "continue": "Continue"
+      },
+      "text": {
+        "login": "login",
+        "description": "enter you email and password to login",
+        "email": "Email",
+        "password": "Password",
+        "errors": {
+          "email": {
+            "invalid": "Invalid email format",
+            "required": "Email is required"
+          },
+          "password": {
+            "minLength": "Password must be at least 4 characters",
+            "required": "Password is required"
+          }
+        }
+      }
+    },
+    "home": {
+      "title": "Home",
+      "button": {
+        "toggleThemeTooltip": "Toggle theme"
+      }
+    },
+    "settings": {
+      "title": "Settings"
+    }
+  },
+  "drawer": {
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings",
+    "preferences": "Preferences",
+    "rtl-layout": "RTL layout",
+    "logout": "Logout"
+  }
+}

@@ -14,10 +14,10 @@ const Page = () => {
 
   return (
     <div>
-      Home
+      <h1>Home</h1>
       <ToggleDarkTheme />
       <Button onClick={() => dispatch(SignOut(router))} variant="contained" color="primary">
-        signout
+        Sign Out
       </Button>
     </div>
   );
