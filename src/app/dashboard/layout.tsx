@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import {styled, useTheme, Theme, CSSObject} from '@mui/material/styles';
-import {useRouter, usePathname} from 'next/navigation'; // Next.js App Router hooks
+import {useRouter, usePathname} from 'next/navigation';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
@@ -22,6 +22,10 @@ import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AuthProvider from '@/auth/AuthProvider';
+import {LinearProgress} from '@mui/material';
+import {useSelector} from 'react-redux';
+import {selectLoading} from '@/redux/selectors/common-selector';
+import LogoDevIcon from '@mui/icons-material/LogoDev';
 
 const drawerWidth = 240;
 
@@ -94,10 +98,11 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Layout({children}: {children: React.ReactNode}) {
+  const isLoading = useSelector(selectLoading);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const router = useRouter(); // Hook for navigation
-  const pathname = usePathname(); // Hook to get current route
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
@@ -120,10 +125,23 @@ export default function Layout({children}: {children: React.ReactNode}) {
             <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" sx={[{marginRight: 5}, open && {display: 'none'}]}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Hello World
+            <LogoDevIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                display: {xs: 'none', md: 'flex'},
+                fontWeight: 700,
+                // letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}>
+              MY APP
             </Typography>
           </Toolbar>
+          {isLoading && <LinearProgress sx={{position: 'absolute', bottom: 0, width: '100%'}} />}
         </AppBar>
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
@@ -132,19 +150,12 @@ export default function Layout({children}: {children: React.ReactNode}) {
           <Divider />
           <List>
             {navItems.map(item => (
-              <ListItem
-                key={item.text}
-                disablePadding
-                sx={{display: 'block'}}
-                onClick={() => router.push(item.path)} // Use router.push for navigation
-              >
+              <ListItem key={item.text} disablePadding sx={{display: 'block'}} onClick={() => router.push(item.path)}>
                 <ListItemButton
                   sx={[
                     {minHeight: 48, px: 2.5},
                     open ? {justifyContent: 'initial'} : {justifyContent: 'center'},
-                    pathname === item.path && {
-                      backgroundColor: theme.palette.action.selected,
-                    },
+                    pathname === item.path && {backgroundColor: theme.palette.action.selected},
                   ]}>
                   <ListItemIcon sx={[{minWidth: 0, justifyContent: 'center'}, open ? {mr: 3} : {mr: 'auto'}]}>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} sx={[open ? {opacity: 1} : {opacity: 0}]} />

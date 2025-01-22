@@ -1,20 +1,25 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import authReducer from './reducers/auth-slice';
 import logger from 'redux-logger';
 import storageSession from 'redux-persist/lib/storage/session';
 import {persistReducer} from 'redux-persist';
 import {persistStore} from 'redux-persist';
 
+import authReducer from './reducers/auth-slice';
+import commonReducer from './reducers/common-slice';
+import countriesReducer from './reducers/countries-slice';
+
 const persistConfig = {
   key: 'root',
   storage: storageSession,
   blacklist: [], //reducer names listed here will not be persisted
-  whitelist: ["auth"],
+  whitelist: ['auth'],
   debug: true,
 };
 
 const rootReducer = combineReducers({
+  common: commonReducer,
   auth: authReducer,
+  countries: countriesReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
