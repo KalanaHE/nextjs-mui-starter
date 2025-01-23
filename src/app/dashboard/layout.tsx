@@ -22,10 +22,13 @@ import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AuthProvider from '@/auth/AuthProvider';
-import {LinearProgress} from '@mui/material';
-import {useSelector} from 'react-redux';
+import {LinearProgress, Menu, MenuItem} from '@mui/material';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectLoading} from '@/redux/selectors/common-selector';
 import LogoDevIcon from '@mui/icons-material/LogoDev';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import {AppDispatch} from '@/redux/store';
+import {SignOut} from '@/redux/reducers/auth-slice';
 
 const drawerWidth = 240;
 
@@ -103,6 +106,17 @@ export default function Layout({children}: {children: React.ReactNode}) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
@@ -134,12 +148,36 @@ export default function Layout({children}: {children: React.ReactNode}) {
                 mr: 2,
                 display: {xs: 'none', md: 'flex'},
                 fontWeight: 700,
-                // letterSpacing: '.3rem',
                 color: 'inherit',
                 textDecoration: 'none',
               }}>
               MY APP
             </Typography>
+
+            {/* Pushes the account icon to the right */}
+            <Box sx={{flexGrow: 1}} />
+
+            <div>
+              <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleMenu} color="inherit">
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom', // Position the menu below the icon
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top', // Ensure it opens downward from the top of the menu
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}>
+                <MenuItem onClick={() => dispatch(SignOut(router))}>Sign Out</MenuItem>
+              </Menu>
+            </div>
           </Toolbar>
           {isLoading && <LinearProgress sx={{position: 'absolute', bottom: 0, width: '100%'}} />}
         </AppBar>
